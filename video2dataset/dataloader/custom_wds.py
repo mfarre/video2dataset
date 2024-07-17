@@ -507,7 +507,7 @@ class TorchDataWebdataset(DataPipeline, FluidInterfaceWithChangedDecode):
             main_datapipe.apply_sharding(world_size, global_rank)
             # synchronize data across processes to prevent hanging if sharding is uneven (which is likely)
             main_datapipe = main_datapipe.fullsync()
-        except RuntimeError:
+        except Exception as e:
             print("torch distributed not used, not applying sharding in dataloader")
             pass
         # start shuffling accross shards for the first time to mix different datasets
