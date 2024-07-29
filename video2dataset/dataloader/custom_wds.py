@@ -507,9 +507,10 @@ class TorchDataWebdataset(DataPipeline, FluidInterfaceWithChangedDecode):
             main_datapipe.apply_sharding(world_size, global_rank)
             # synchronize data across processes to prevent hanging if sharding is uneven (which is likely)
             main_datapipe = main_datapipe.fullsync()
-        except ValueError as e:
+        except (RuntimeError, ValueError) as e:
             if str(e) == "Default process group has not been initialized, please make sure to call init_process_group.":
                 print("torch distributed not used, not applying sharding in dataloader")
+                pass
             else:
                 raise  # re-raise if it's a different ValueError
 
