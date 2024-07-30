@@ -1,4 +1,5 @@
 """classes and functions for downloading videos"""
+
 import os
 import uuid
 import requests
@@ -174,8 +175,8 @@ class YtDlpDownloader:
         self.metadata_args = yt_args.get("yt_metadata_args", {})
         self.video_size = yt_args.get("download_size", 360)
         self.audio_rate = yt_args.get("download_audio_rate", 44100)
-        self.proxy = yt_args.get("proxy",None)
-        self.nocheckcertificate = not yt_args.get("proxy-check-certificate",True)
+        self.proxy = yt_args.get("proxy", None)
+        self.nocheckcertificate = not yt_args.get("proxy-check-certificate", True)
         self.tmp_dir = tmp_dir
         self.encode_formats = encode_formats
 
@@ -203,8 +204,8 @@ class YtDlpDownloader:
                 "quiet": True,
             }
             if self.proxy:
-                ydl_opts['proxy'] = self.proxy
-                ydl_opts['nocheckcertificate'] = self.nocheckcertificate
+                ydl_opts["proxy"] = self.proxy
+                ydl_opts["nocheckcertificate"] = self.nocheckcertificate
 
             err = None
             try:
@@ -230,8 +231,8 @@ class YtDlpDownloader:
                 "no_warnings": True,
             }
             if self.proxy:
-                ydl_opts['proxy'] = self.proxy
-                ydl_opts['nocheckcertificate'] = self.nocheckcertificate
+                ydl_opts["proxy"] = self.proxy
+                ydl_opts["nocheckcertificate"] = self.nocheckcertificate
 
             err = None
             try:
