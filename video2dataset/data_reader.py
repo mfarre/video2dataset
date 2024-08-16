@@ -233,6 +233,9 @@ class YtDlpDownloader:
             if self.proxy:
                 ydl_opts["proxy"] = self.proxy
                 ydl_opts["nocheckcertificate"] = self.nocheckcertificate
+                if self.metadata_args:
+                    self.metadata_args["proxy"] = self.proxy
+                    self.metadata_args["nocheckcertificate"] = self.nocheckcertificate
 
             err = None
             try:
