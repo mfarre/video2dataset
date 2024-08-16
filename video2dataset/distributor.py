@@ -150,7 +150,7 @@ class SlurmDistributor:
         job_name,
         partition,
         n_nodes,
-        account,
+        account=None,
         gpus_per_node=0,
         tasks_per_node=1,
         nodelist=None,
@@ -201,8 +201,10 @@ class SlurmDistributor:
     def _make_sbatch(self):
         nodelist = ("#SBATCH --nodelist " + self.nodelist) if self.nodelist is not None else ""
         exclude = ("#SBATCH --exclude " + self.exclude) if self.exclude is not None else ""
-        account = ("#SBATCH --account " + self.account) if self.account is not None else ""
         constraint = ("#SBATCH --constraint " + self.constraint) if self.constraint is not None else ""
+        account_line = f"#SBATCH --account={self.account}" if self.account is not None else ""
+        srun_command = f"srun --account={self.account} bash {self.launcher_path}" if self.account is not None else f"srun bash {self.launcher_path}"
+
         return f"""#!/bin/bash
 #SBATCH --partition={self.partition}
 #SBATCH --job-name={self.job_name}
@@ -214,13 +216,15 @@ class SlurmDistributor:
 #SBATCH --exclusive
 {nodelist}
 {exclude}
-{account}
+{account_line}
 {constraint}
 #SBATCH --open-mode append
 
-srun --account {self.account} bash {self.launcher_path}
+{srun_command}
 
 """
+
+
 
     def _make_launch_cpu(
         self,
